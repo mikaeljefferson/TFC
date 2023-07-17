@@ -1,5 +1,5 @@
 import { Model, QueryInterface, DataTypes } from 'sequelize';
-import ITeam from '../../Interfaces/Iteam';
+import ITeam from '../../Interfaces/ITeam';
 
 export default {
     up(queryInterface: QueryInterface) {
@@ -13,6 +13,7 @@ export default {
             teamName: {
                 type: DataTypes.STRING,
                 allowNull: false,
+                field: 'team_name'
             },
         });
     },

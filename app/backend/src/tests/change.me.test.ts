@@ -5,41 +5,31 @@ import chaiHttp = require('chai-http');
 
 import { app } from '../app';
 import Example from '../database/models/ExampleModel';
-
+import { describe, it } from 'mocha';
 import { Response } from 'superagent';
+
+import teamsMock from './mocks/team.mock';
+
+import Team from '../database/models/team.model';
 
 chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe('Seu teste', () => {
-  /**
-   * Exemplo do uso de stubs com tipos
-   */
+describe('testes sobre teams', () => {
 
-  // let chaiHttpResponse: Response;
+  let response: Response;
 
-  // before(async () => {
-  //   sinon
-  //     .stub(Example, "findOne")
-  //     .resolves({
-  //       ...<Seu mock>
-  //     } as Example);
-  // });
+  afterEach(function() { sinon.restore() });
 
-  // after(()=>{
-  //   (Example.findOne as sinon.SinonStub).restore();
-  // })
-
-  // it('...', async () => {
-  //   chaiHttpResponse = await chai
-  //      .request(app)
-  //      ...
-
-  //   expect(...)
-  // });
-
-  it('Seu sub-teste', () => {
-    expect(false).to.be.eq(true);
+  it ('retorna todos os  teams', async () => {
+    sinon.stub(Team, 'findOne').resolves(teamsMock as unknown as Team);
+    response = await chai.request(app).get('/teams');
+    expect(response.status).to.be.eq(200);
+    expect(response.body).to.be.deep.eq(teamsMock);
   });
 });
+
+function afterEach(arg0: () => void) {
+  throw new Error('Function not implemented.');
+}
