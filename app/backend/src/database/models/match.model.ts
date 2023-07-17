@@ -4,9 +4,9 @@ import {
   InferAttributes,
   InferCreationAttributes,
   CreationOptional,
-  } from 'sequelize';
-  import db from '.';
-  
+} from 'sequelize';
+import db from '.';
+
 class Match extends
   Model<InferAttributes<Match>, InferCreationAttributes<Match>> {
   declare id: CreationOptional<number>;
@@ -15,8 +15,8 @@ class Match extends
   declare awayTeamId: number;
   declare awayTeamGoals: number;
   declare inProgress: boolean;
-  }
-  
+}
+
 Match.init(
   {
     id: {
@@ -52,7 +52,7 @@ Match.init(
     tableName: 'matches',
     modelName: 'Match',
     underscored: true,
-    },
+  },
 );
 
 export default Match;
