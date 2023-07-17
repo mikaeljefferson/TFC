@@ -14,7 +14,7 @@ InferCreationAttributes<User>> {
   declare role: string;
   declare email: string;
   declare password: string;
-  }
+}
 
 User.init({
   id: {
@@ -27,7 +27,7 @@ User.init({
     type: DataTypes.STRING,
     allowNull: false,
   },
-    role: {
+  role: {
     type: DataTypes.STRING,
     allowNull: false,
   },
