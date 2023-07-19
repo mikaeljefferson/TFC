@@ -25,6 +25,6 @@ export default class JWT {
       return token.substring(7);
     }
     return token;
-  }
+ }
 
 }
