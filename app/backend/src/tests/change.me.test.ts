@@ -28,6 +28,19 @@ describe('testes sobre teams', () => {
     expect(response.status).to.be.eq(200);
     expect(response.body).to.be.deep.eq(teamsMock);
   });
+  it('retorna teams  pelo Id', async () => {
+
+    sinon.stub(Team, "findByPk").resolves(teamsMock[0] as unknown as Team);
+
+    const response = await chai
+            .request(app)
+            .get('/teams/1');
+
+
+    expect(response.status).to.be.equal(200);
+    expect(response.body).to.be.deep.equal(teamsMock[0]);
+
+  });
 });
 
 function afterEach(arg0: () => void) {
