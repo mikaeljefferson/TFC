@@ -9,7 +9,9 @@ const router = Router();
 
 router.post('/', Validations.validateLogin, (req, res) => loginController.login(req, res));
 
-router.get('/role',JWTValidations.validateToken,(req, res) => loginController.getUserRole(req, res),);
+router.get(
+    '/role',
+    JWTValidations.validateToken,
+    (req, res) => loginController.getUserRole(req, res),);
 
 export default router;
-

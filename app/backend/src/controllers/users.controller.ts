@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import LoginService from '../services/users.service';
 import mapStatusHTTP from '../utils/mapError';
 import JWT from '../utils/tokenJwt';
+
 export default class LoginController {
   constructor(
     private loginService = new LoginService(),

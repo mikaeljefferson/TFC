@@ -19,10 +19,12 @@ export default class JWT {
       return 'Token must be a valid token';
     }
   }
+
   static removeBearerPrefix(token: string): string {
     if (token.startsWith('Bearer ')) {
       return token.substring(7);
     }
     return token;
   }
+
 }

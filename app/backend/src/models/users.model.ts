@@ -1,6 +1,6 @@
 import User from '../database/models/user.model';
-import  IUser  from '../Interfaces/IUser';
-import  IUserModel  from '../Interfaces/IuserModel';
+import IUser from '../Interfaces/IUser';
+import IUserModel from '../Interfaces/IuserModel';
 
 export default class UserModel implements IUserModel {
   private model = User;
@@ -11,6 +11,7 @@ export default class UserModel implements IUserModel {
     const { id, password, username, role } = user;
     return { id, email, password, username, role };
   }
+  
   async findByRole(email: IUser['email']): Promise<string | null> {
     const user = await this.model.findOne({
       where: { email },
