@@ -1,10 +1,6 @@
-import IMatch from './IMatch';
-
-export type MatchGoals = { homeTeamGoals: string, awayTeamGoals: string };
-
-export interface IMatchService {
-  findAll(): Promise<IMatch[]>;
-  findWithWhere(query: boolean): Promise<IMatch[]>;
-  insert(match: IMatch): Promise<IMatch>;
-  matchIsOver(id: number): Promise<void>;
+export default interface IModel<T> {
+  findAll(): Promise<T[]>;
+  findById(id: T[keyof T]): Promise<T | null>;
+  findByField?(field: keyof T, value: T[typeof field]): Promise<T | null>
+  findAllByField?(field: keyof T, value: T[typeof field] | undefined): Promise<T[] | null>
 }
