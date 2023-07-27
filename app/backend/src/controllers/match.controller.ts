@@ -1,16 +1,40 @@
 import { Request, Response } from 'express';
-import MatchesService from '../services/match.service';
+import MatchService from '../services/match.service';
 
 export default class MatchesController {
-  constructor(private service = new MatchesService()) {}
+  constructor(
+    private matchService = new MatchService(),
+  ) { }
 
-  list = async (req: Request<unknown, unknown, unknown, { inProgress: string }>, res: Response) => {
-    const result = await this.service.findAll(req.query.inProgress);
-    return res.status(result.status).json(result.data);
-  };
+  public async getAllMatches(req: Request, res: Response) {
+    try {
+      const query = req.query.inProgress;
+      if (query && typeof query === 'string') {
+        const serviceResponse = await this.matchService.getAllMatchesFiltered(query);
+        return res.status(200).json(serviceResponse);
+      }
+    } catch {
+      return res.status(400).json('notfound');
+    }
+    const serviceResponse = await this.matchService.getAllMatches();
+    return res.status(200).json(serviceResponse);
+  }
 
-  findById = async (req: Request<{ id: string }>, res: Response) => {
-    const result = await this.service.findById(Number(req.params.id));
-    return res.status(result.status).json(result.data);
-  };
+  public async setMatchStatus(req: Request, res: Response) {
+    const { id } = req.params;
+    if (id) {
+      const serviceResponse = await this.matchService.setMatchStatus(id);
+      return res.status(200).json({ message: serviceResponse });
+    }
+  }
+
+  public async setMatchGoals(req: Request, res: Response) {
+    const { id } = req.params;
+    const { homeTeamGoals, awayTeamGoals } = req.body;
+    if (id) {
+      const serviceResponse = await this.matchService
+        .setMatchGoals(id, homeTeamGoals, awayTeamGoals);
+      return res.status(200).json({ message: serviceResponse });
+    }
+  }
 }

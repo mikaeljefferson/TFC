@@ -1,19 +1,44 @@
-import Result from '../Interfaces/IResult';
-import IModel from '../Interfaces/IMatchService';
-import IMatch from '../Interfaces/IMatch';
-import MatchModel from '../models/match.model';
+import TeamsTable from '../database/models/team.model';
+import MatchesTable from '../database/models/match.model';
 
 export default class MatchesService {
-  constructor(private model: IModel<IMatch> = new MatchModel()) {}
-  async findAll(inProgress: string): Promise<Result<IMatch[]>> {
-    const inProgressArg = inProgress ? (/true/i).test(inProgress) : undefined;
-    const data = await this.model.findAllByField?.('inProgress', inProgressArg);
-    return { status: 200, data: data || [] };
+  private teamModel = TeamsTable;
+  private matchModel = MatchesTable;
+  public async getAllMatches() {
+    const matchesList = await this.matchModel.findAll({
+      include: [
+        { model: this.teamModel,
+          as: 'homeTeam',
+          attributes: ['teamName'],
+        },
+        {
+          model: this.teamModel,
+          as: 'awayTeam',
+          attributes: ['teamName'],
+        }],
+      raw: true,
+      nest: true,
+    });
+    return matchesList;
   }
 
-  async findById(id: IMatch['id']): Promise<Result<IMatch>> {
-    const data = await this.model.findById(id);
-    if (data) return { status: 200, data };
-    return { status: 404, data: { message: 'Match Not Found.' } };
+  public async getAllMatchesFiltered(boolean:string) {
+    const matchesList = await this.getAllMatches();
+    const test = boolean === 'true';
+    const matchesListFiltered = matchesList
+      .filter((match) => +match.inProgress === +test);
+    return matchesListFiltered;
+  }
+
+  public async setMatchStatus(id:string) {
+    const thisMatch = await this.matchModel.findByPk(+id);
+    await thisMatch?.update({ inProgress: false }, { where: { inProgress: true } });
+    return 'Finished';
+  }
+
+  public async setMatchGoals(id:string, homeTeamGoals:number, awayTeamGoals:number) {
+    const thisMatch = await this.matchModel.findByPk(+id);
+    await thisMatch?.update({ homeTeamGoals, awayTeamGoals });
+    return 'Finished updating Match Goals';
   }
 }

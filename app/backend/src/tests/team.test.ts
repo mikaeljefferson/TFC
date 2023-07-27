@@ -4,7 +4,6 @@ import * as chai from 'chai';
 import chaiHttp = require('chai-http');
 
 import { app } from '../app';
-import Example from '../database/models/ExampleModel';
 import { describe, it } from 'mocha';
 import { Response } from 'superagent';
 
@@ -42,7 +41,3 @@ describe('testes sobre teams', () => {
 
   });
 });
-
-function afterEach(arg0: () => void) {
-  throw new Error('Function not implemented.');
-}

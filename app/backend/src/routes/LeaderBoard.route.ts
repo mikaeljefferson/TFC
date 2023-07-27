@@ -5,4 +5,5 @@ const router = Router();
 
 router.get('/home', (req, res) => LeaderBoardController.getLeaderBoard(req, res));
 router.get('/away', (req, res) => LeaderBoardController.getLeaderBoardAway(req, res));
+router.get('/', (req, res) => LeaderBoardController.getLeaderBoard(req, res));
 export default router;
